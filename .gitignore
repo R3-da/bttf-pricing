@@ -70,3 +70,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# TODO files
+TODO

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Engine</title>
+    <meta name="description" content="Calculate the best price for your Back to the Future collection with our advanced pricing engine.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pricing Engine</h1>
+        
+        <div class="input-group">
+            <label for="cart-content">Enter your cart items (one per line):</label>
+            <textarea id="cart-content" placeholder="Back to the Future 1&#10;Back to the Future 2&#10;La chèvre"></textarea>
+        </div>
+
+        <button id="calculate-btn">Calculate Price</button>
+
+        <div id="result-container" class="result">
+            <div id="price-display">0.00</div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 DVD Store.
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
