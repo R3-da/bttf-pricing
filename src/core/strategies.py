@@ -19,10 +19,10 @@ class BackToTheFutureStrategy(PricingStrategy):
         elif distinct_count >= 3:
             discount = 0.20
         
-        bttf_total = len(bttf_movies) * self.BTTF_PRICE
+        bttf_total = sum(m.price for m in bttf_movies)
         discounted_bttf_total = bttf_total * (1 - discount)
 
         # Calculate Other logic
-        other_total = len(other_movies) * self.OTHER_PRICE
+        other_total = sum(m.price for m in other_movies)
 
         return discounted_bttf_total + other_total

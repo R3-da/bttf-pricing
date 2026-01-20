@@ -4,10 +4,12 @@ from typing import List
 @dataclass(frozen=True)
 class Movie:
     title: str
+    series_title: str | None = None
+    price: float = 0.0
 
     @property
     def is_bttf(self) -> bool:
-        return "Back to the Future" in self.title
+        return self.series_title == "Back to the Future"
 
 @dataclass
 class Cart:
