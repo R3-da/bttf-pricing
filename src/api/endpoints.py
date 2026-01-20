@@ -1,0 +1,23 @@
+from fastapi import APIRouter, Body, HTTPException
+from pydantic import BaseModel
+from src.core.services import PricingService
+
+router = APIRouter()
+service = PricingService()
+
+class PriceResponse(BaseModel):
+    price: float
+
+@router.post("/price", response_model=PriceResponse)
+async def calculate_price(
+    cart_content: str = Body("", media_type="text/plain", description="Raw text content of the cart")
+) -> PriceResponse:
+    """
+    Calculate the total price for a list of movies provided as raw text.
+    """
+    try:
+        price = service.calculate_price(cart_content)
+        return PriceResponse(price=price)
+    except Exception as e:
+        # Generic error handling, in production we would log this and be more specific
+        raise HTTPException(status_code=500, detail=str(e))
