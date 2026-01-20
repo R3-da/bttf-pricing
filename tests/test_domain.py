@@ -11,7 +11,7 @@ def test_cart_from_text():
     assert cart.items[2].title == "Back to the Future 3"
 
 def test_cart_is_bttf():
-    assert Movie("Back to the Future 1").is_bttf
+    assert Movie("Back to the Future 1", series_title="Back to the Future").is_bttf
     assert not Movie("La chèvre").is_bttf
 
 def test_cart_empty():

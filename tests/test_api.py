@@ -1,16 +1,15 @@
-from fastapi.testclient import TestClient
-from src.main import app
+import pytest
 
-client = TestClient(app)
-
-def test_read_main():
-    response = client.get("/")
+@pytest.mark.asyncio
+async def test_read_main(client):
+    response = await client.get("/")
     assert response.status_code == 200
     assert "<!DOCTYPE html>" in response.text
 
-def test_calculate_price_api():
+@pytest.mark.asyncio
+async def test_calculate_price_api(client):
     cart_content = "Back to the Future 1\nBack to the Future 2\nBack to the Future 3"
-    response = client.post(
+    response = await client.post(
         "/api/v1/price",
         content=cart_content,
         headers={"Content-Type": "text/plain"}
@@ -18,10 +17,11 @@ def test_calculate_price_api():
     assert response.status_code == 200
     assert response.json() == {"price": 36.0}
 
-def test_calculate_price_api_empty():
-    response = client.post(
+@pytest.mark.asyncio
+async def test_calculate_price_api_empty(client):
+    response = await client.post(
         "/api/v1/price",
-        content="", # Use content instead of data for raw body in httpx/TestClient
+        content="", 
         headers={"Content-Type": "text/plain"}
     )
     assert response.status_code == 200

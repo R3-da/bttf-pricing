@@ -1,6 +1,8 @@
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body, HTTPException, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 from src.core.services import PricingService
+from src.core.database import get_session
 
 router = APIRouter()
 service = PricingService()
@@ -10,13 +12,14 @@ class PriceResponse(BaseModel):
 
 @router.post("/price", response_model=PriceResponse)
 async def calculate_price(
-    cart_content: str = Body("", media_type="text/plain", description="Raw text content of the cart")
+    cart_content: str = Body("", media_type="text/plain", description="Raw text content of the cart"),
+    session: AsyncSession = Depends(get_session)
 ) -> PriceResponse:
     """
     Calculate the total price for a list of movies provided as raw text.
     """
     try:
-        price = service.calculate_price(cart_content)
+        price = await service.calculate_price(cart_content, session)
         return PriceResponse(price=price)
     except Exception as e:
         # Generic error handling, in production we would log this and be more specific
