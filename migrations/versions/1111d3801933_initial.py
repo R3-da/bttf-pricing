@@ -26,7 +26,6 @@ def upgrade() -> None:
     sa.Column('id', sa.Uuid(), nullable=False),
     sa.Column('title', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('description', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('release_order', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('movies',
@@ -34,6 +33,7 @@ def upgrade() -> None:
     sa.Column('title', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('release_date', sa.Date(), nullable=False),
     sa.Column('duration_min', sa.Integer(), nullable=False),
+    sa.Column('price', sa.Float(), nullable=False),
     sa.Column('series_id', sa.Uuid(), nullable=True),
     sa.Column('series_index', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['series_id'], ['series.id'], ),

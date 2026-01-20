@@ -27,10 +27,7 @@ async def seed_data():
             print("Seeding BTTF data...")
             bttf_series = Series(
                 title="Back to the Future",
-                description="The legendary time travel saga",
-                release_order=False # Based on the prompt description, seems we use distinct count logic mostly?
-                # Actually prompt earlier said "release_order boolean" in schema req.
-                # I'll set it to True or False depending on my understanding, let's say False for now as logic is specific.
+                description="The legendary time travel saga"
             )
             session.add(bttf_series)
             await session.commit()

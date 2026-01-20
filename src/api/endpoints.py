@@ -21,6 +21,8 @@ async def calculate_price(
     try:
         price = await service.calculate_price(cart_content, session)
         return PriceResponse(price=price)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         # Generic error handling, in production we would log this and be more specific
         raise HTTPException(status_code=500, detail=str(e))

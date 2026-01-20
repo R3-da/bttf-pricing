@@ -9,7 +9,6 @@ class Series(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     title: str
     description: Optional[str] = None
-    release_order: bool = Field(default=False, description="If true, movies are priced based on release order")
     
     movies: List["Movie"] = Relationship(back_populates="series")
 

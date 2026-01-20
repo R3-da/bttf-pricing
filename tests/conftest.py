@@ -22,7 +22,7 @@ async def session() -> AsyncGenerator[AsyncSession, None]:
     
     async with TestingSessionLocal() as session:
         # Seed test data
-        bttf_series = Series(title="Back to the Future", release_order=False)
+        bttf_series = Series(title="Back to the Future")
         session.add(bttf_series)
         await session.commit()
         await session.refresh(bttf_series)
