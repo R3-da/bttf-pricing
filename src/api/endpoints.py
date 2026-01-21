@@ -12,7 +12,12 @@ class PriceResponse(BaseModel):
 
 @router.post("/price", response_model=PriceResponse)
 async def calculate_price(
-    cart_content: str = Body("", media_type="text/plain", description="Raw text content of the cart"),
+    cart_content: str = Body(
+        "",
+        media_type="text/plain",
+        description="Raw text content of the cart",
+        example="Back to the Future 1\nBack to the Future 2\nLa chèvre"
+    ),
     session: AsyncSession = Depends(get_session)
 ) -> PriceResponse:
     """
