@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
-from src.core.services import PricingService
+from src.core.services import PricingService, MissingMoviesError
 from src.core.database import get_session
 
 router = APIRouter()
@@ -26,8 +26,16 @@ async def calculate_price(
     try:
         price = await service.calculate_price(cart_content, session)
         return PriceResponse(price=price)
+    except MissingMoviesError as e:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "message": "Some movies were not found in the database.",
+                "missing_movies": e.missing_movies
+            }
+        )
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         # Generic error handling, in production we would log this and be more specific
         raise HTTPException(status_code=500, detail=str(e))

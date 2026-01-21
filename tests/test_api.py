@@ -36,7 +36,12 @@ async def test_calculate_price_missing_movie(client):
         headers={"Content-Type": "text/plain"}
     )
     assert response.status_code == 404
-    assert response.json() == {"detail": "Movie(s) not found: Unknown Movie"}
+    assert response.json() == {
+        "detail": {
+            "message": "Some movies were not found in the database.",
+            "missing_movies": ["Unknown Movie"]
+        }
+    }
 
 @pytest.mark.asyncio
 async def test_calculate_price_multiple_missing_movies(client):
@@ -49,4 +54,9 @@ async def test_calculate_price_multiple_missing_movies(client):
     assert response.status_code == 404
     # The set logic might order them differently, but we sorted them in service code.
     # Expect alphabetical order "Unknown Movie 1, Unknown Movie 2"
-    assert response.json() == {"detail": "Movie(s) not found: Unknown Movie 1, Unknown Movie 2"}
+    assert response.json() == {
+        "detail": {
+            "message": "Some movies were not found in the database.",
+            "missing_movies": ["Unknown Movie 1", "Unknown Movie 2"]
+        }
+    }
