@@ -5,6 +5,11 @@ from src.domain.sql_models import Movie as SQLMovie
 from src.core.strategies import BackToTheFutureStrategy
 from src.core.interfaces import PricingStrategy
 
+class MissingMoviesError(ValueError):
+    def __init__(self, missing_movies: list[str]):
+        self.missing_movies = missing_movies
+        super().__init__(f"Movie(s) not found: {', '.join(missing_movies)}")
+
 class PricingService:
     def __init__(self, strategy: PricingStrategy = None):
         # By default use BTTF strategy, but allow injection
@@ -47,7 +52,7 @@ class PricingService:
         if missing_movies:
             # Join unique missing items to avoid spamming same title
             unique_missing = sorted(list(set(missing_movies)))
-            raise ValueError(f"Movie(s) not found: {', '.join(unique_missing)}")
+            raise MissingMoviesError(unique_missing)
             
         final_cart = Cart(items=domain_movies)
         return self.strategy.calculate_price(final_cart)

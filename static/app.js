@@ -26,7 +26,22 @@ calculateBtn.addEventListener('click', async () => {
         });
 
         if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
+            const errorData = await response.json().catch(() => ({}));
+            let errorMessage = "Unknown error occurred.";
+
+            if (errorData.detail && typeof errorData.detail === 'object') {
+                if (errorData.detail.missing_movies) {
+                    const missingMovies = errorData.detail.missing_movies.join(', ');
+                    errorMessage = `Movie(s) not found: ${missingMovies}`;
+                } else {
+                    errorMessage = errorData.detail.message || JSON.stringify(errorData.detail);
+                }
+            } else {
+                errorMessage = errorData.detail || `Error: ${response.statusText}`;
+            }
+
+            console.error("Error response from server:", errorMessage);
+            throw new Error(errorMessage);
         }
 
         const data = await response.json();
@@ -38,7 +53,7 @@ calculateBtn.addEventListener('click', async () => {
 
     } catch (error) {
         console.error("Failed to calculate price:", error);
-        priceDisplay.innerHTML = `<p style="color: #ff6b6b">Error calculating price.</p>`;
+        priceDisplay.innerHTML = `<p style="color: #ff6b6b">${error.message}</p>`;
         resultContainer.style.display = 'block';
     } finally {
         calculateBtn.textContent = "Calculate Price";
