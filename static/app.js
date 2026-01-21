@@ -6,7 +6,9 @@ const priceDisplay = document.getElementById('price-display');
 calculateBtn.addEventListener('click', async () => {
     const content = cartInput.value;
     if (!content.trim()) {
-        alert("Please enter items in the cart.");
+        console.error("Cart content is empty.");
+        priceDisplay.innerHTML = `<p style="color: #ff6b6b">Please enter items in the cart.</p>`;
+        resultContainer.style.display = 'block';
         return;
     }
 
