@@ -2,10 +2,19 @@ from typing import AsyncGenerator
 from sqlmodel import SQLModel
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 import os
+from dotenv import load_dotenv
 
-# Allow overriding via env var for docker vs local
-DATABASE_DIR = os.getenv("DATABASE_HOST", "localhost")
-DATABASE_URL = f"postgresql+asyncpg://user:password@{DATABASE_DIR}:5432/bttf_pricing"
+# Load environment variables from .env file
+load_dotenv()
+
+# Database configuration from environment variables
+POSTGRES_USER = os.getenv("POSTGRES_USER", "user")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "password")
+POSTGRES_DB = os.getenv("POSTGRES_DB", "bttf_pricing")
+DATABASE_HOST = os.getenv("DATABASE_HOST", "localhost")
+DATABASE_PORT = os.getenv("DATABASE_PORT", "5432")
+
+DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{POSTGRES_DB}"
 
 engine = create_async_engine(
     DATABASE_URL,
