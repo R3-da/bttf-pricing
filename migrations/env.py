@@ -22,7 +22,11 @@ from src.domain.sql_models import Series, Movie
 config = context.config
 
 # Overwrite sqlalchemy.url in configuration
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+try:
+    config.set_main_option("sqlalchemy.url", DATABASE_URL)
+except Exception as e:
+    print(f"Failed to create database engine: {e}")
+    raise
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
