@@ -31,4 +31,4 @@ COPY pyproject.toml .
 EXPOSE 8000
 
 # Run migrations, seed database, and start application
-CMD ["sh", "-c", "alembic upgrade head && python -m scripts.seed && uvicorn src.main:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "(alembic upgrade head || echo 'Migrations failed') && (python -m scripts.seed || echo 'Seeding failed') && uvicorn src.main:app --host 0.0.0.0 --port 8000"]
