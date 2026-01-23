@@ -1,6 +1,17 @@
 [tool.poetry]
 package-mode = false
 
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.0.0"
+pytest-asyncio = ">=0.23.0"
+httpx = ">=0.26.0"
+black = ">=24.1.1"
+flake8 = ">=7.0.0"
+pre-commit = ">=3.6.1"
+aiosqlite = "*"
+greenlet = "*"
+pytest-timeout = "*"
+
 [project]
 name = "bttf-pricing"
 version = "0.1.0"
@@ -27,6 +38,7 @@ dev = [
     "black>=24.1.1",
     "flake8>=7.0.0",
     "pre-commit>=3.6.1",
+    "pytest-asyncio>=0.23.0",
 ]
 
 [build-system]
@@ -46,6 +58,9 @@ strict = true
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
+
+[tool.pytest-timeout]
+timeout = 30
 
 [tool.black]
 line-length = 88
