@@ -3,6 +3,16 @@ const calculateBtn = document.getElementById('calculate-btn');
 const resultContainer = document.getElementById('result-container');
 const priceDisplay = document.getElementById('price-display');
 
+// Fill placeholder content when Tab is pressed on empty textarea
+cartInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab' && !cartInput.value.trim()) {
+        e.preventDefault();
+        // Use placeholder directly - browser already decoded &#10; entities
+        cartInput.value = cartInput.placeholder;
+        console.log('Filled with:', cartInput.value);
+    }
+}, true);
+
 calculateBtn.addEventListener('click', async () => {
     const content = cartInput.value;
     if (!content.trim()) {
