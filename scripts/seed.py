@@ -10,6 +10,10 @@ async def seed_data():
     # For now, let's just create if clean or just insert
     # Ideally checking if exists first
 
+    if engine is None:
+        print("Database engine is not initialized. Cannot seed data.")
+        return
+
     async with engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
         # pass
