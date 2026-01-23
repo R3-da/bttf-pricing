@@ -24,6 +24,9 @@ dev = [
     "ruff>=0.2.0",
     "mypy>=1.8.0",
     "httpx>=0.26.0",
+    "black>=24.1.1",
+    "flake8>=7.0.0",
+    "pre-commit>=3.6.1",
 ]
 
 [build-system]
@@ -43,3 +46,13 @@ strict = true
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  | migrations
+)/
+'''

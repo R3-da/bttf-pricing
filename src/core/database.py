@@ -19,16 +19,18 @@ DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DATAB
 
 engine = create_async_engine(
     DATABASE_URL,
-    echo=DB_ECHO, # Configured via environment variable
+    echo=DB_ECHO,  # Configured via environment variable
 )
 
 async_session_factory = async_sessionmaker(
     engine, class_=AsyncSession, expire_on_commit=False
 )
 
+
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_factory() as session:
         yield session
+
 
 async def init_db():
     async with engine.begin() as conn:

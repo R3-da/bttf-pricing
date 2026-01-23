@@ -55,7 +55,6 @@ ENV/
 .venv/
 
 # IDE / Editor settings
-.vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace

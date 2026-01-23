@@ -9,8 +9,10 @@ router = APIRouter()
 service = PricingService()
 logger = logging.getLogger(__name__)
 
+
 class PriceResponse(BaseModel):
     price: float
+
 
 @router.post("/price", response_model=PriceResponse)
 async def calculate_price(
@@ -18,9 +20,9 @@ async def calculate_price(
         "",
         media_type="text/plain",
         description="Raw text content of the cart",
-        example="Back to the Future 1\nBack to the Future 2\nLa chèvre"
+        example="Back to the Future 1\nBack to the Future 2\nLa chèvre",
     ),
-    session: AsyncSession = Depends(get_session)
+    session: AsyncSession = Depends(get_session),
 ) -> PriceResponse:
     """
     Calculate the total price for a list of movies provided as raw text.
@@ -28,10 +30,12 @@ async def calculate_price(
     try:
         # Log a summary of the request
         lines = [line.strip() for line in cart_content.split("\n") if line.strip()]
-        logger.info(f"Calculating price for {len(lines)} items: {', '.join(lines[:3])}{'...' if len(lines) > 3 else ''}")
-        
+        logger.info(
+            f"Calculating price for {len(lines)} items: {', '.join(lines[:3])}{'...' if len(lines) > 3 else ''}"
+        )
+
         price = await service.calculate_price(cart_content, session)
-        
+
         logger.info(f"Price calculated successfully: {price}")
         return PriceResponse(price=price)
     except MissingMoviesError as e:
@@ -40,8 +44,8 @@ async def calculate_price(
             status_code=404,
             detail={
                 "message": "Some movies were not found in the database.",
-                "missing_movies": e.missing_movies
-            }
+                "missing_movies": e.missing_movies,
+            },
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

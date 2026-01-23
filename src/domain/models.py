@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
+
 @dataclass(frozen=True)
 class Movie:
     title: str
@@ -10,6 +11,7 @@ class Movie:
     @property
     def is_bttf(self) -> bool:
         return self.series_title == "Back to the Future"
+
 
 @dataclass
 class Cart:

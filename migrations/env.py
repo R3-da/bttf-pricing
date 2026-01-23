@@ -13,8 +13,9 @@ from sqlmodel import SQLModel
 
 from alembic import context
 from src.core.database import DATABASE_URL
+
 # Import models to register them in SQLModel.metadata
-from src.domain.sql_models import Series, Movie 
+from src.domain.sql_models import Series, Movie
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

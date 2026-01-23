@@ -1,6 +1,7 @@
 from src.domain.models import Cart
 from src.core.interfaces import PricingStrategy
 
+
 class BackToTheFutureStrategy(PricingStrategy):
     BTTF_PRICE = 15.0
     OTHER_PRICE = 20.0
@@ -18,7 +19,7 @@ class BackToTheFutureStrategy(PricingStrategy):
             discount = 0.10
         elif distinct_count >= 3:
             discount = 0.20
-        
+
         bttf_total = sum(m.price for m in bttf_movies)
         discounted_bttf_total = bttf_total * (1 - discount)
 
