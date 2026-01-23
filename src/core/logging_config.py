@@ -1,5 +1,7 @@
 import logging
 import sys
+from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
 
 class CustomFormatter(logging.Formatter):
@@ -39,15 +41,30 @@ def setup_logging():
     stdout_handler = logging.StreamHandler(sys.stdout)
     stdout_handler.setFormatter(CustomFormatter())
 
+    # File handler with standard formatter (no colors in file)
+    log_file = Path(__file__).parent.parent.parent / "app.log"
+    file_handler = RotatingFileHandler(
+        log_file,
+        maxBytes=10 * 1024 * 1024,  # 10MB
+        backupCount=5,
+        encoding="utf-8",
+    )
+    file_formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    file_handler.setFormatter(file_formatter)
+
     # Remove existing handlers to avoid duplicates
     if logger.hasHandlers():
         logger.handlers.clear()
 
     logger.addHandler(stdout_handler)
+    logger.addHandler(file_handler)
 
     # Configure specific loggers for uvicorn and other noisy libraries if needed
-    logging.getLogger("uvicorn.error").handlers = [stdout_handler]
-    logging.getLogger("uvicorn.access").handlers = [stdout_handler]
+    logging.getLogger("uvicorn.error").handlers = [stdout_handler, file_handler]
+    logging.getLogger("uvicorn.access").handlers = [stdout_handler, file_handler]
 
     # Ensure sqlalchemy is quiet (redundant with echo=False but good practice)
     logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
