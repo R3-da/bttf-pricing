@@ -1,6 +1,7 @@
 import logging
 from fastapi import APIRouter, Body, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import SQLAlchemyError, OperationalError, InterfaceError, DBAPIError
 from pydantic import BaseModel
 from src.core.services import PricingService, MissingMoviesError
 from src.core.database import get_session
@@ -50,8 +51,23 @@ async def calculate_price(
                 "missing_movies": e.missing_movies,
             },
         )
+    except (InterfaceError, OperationalError, DBAPIError, SQLAlchemyError) as e:
+        logger.error(f"Database connection error: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=503,
+            detail="Database is currently unavailable. Please try again later.",
+        )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except OSError as e:
+        logger.error(f"Database connection error: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=503,
+            detail="Database is currently unavailable. Please try again later.",
+        )
     except Exception as e:
         logger.error(f"Unexpected error calculating price: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred. Please try again later.",
+        )
