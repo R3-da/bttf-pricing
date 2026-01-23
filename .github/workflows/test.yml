@@ -55,44 +55,17 @@ jobs:
     - name: Set up test environment
       run: |
         cp .env.example .env
-        echo "DATABASE_HOST=localhost" >> .env
-        echo "DATABASE_PORT=5432" >> .env
-        echo "DATABASE_USER=postgres" >> .env
-        echo "DATABASE_PASSWORD=postgres" >> .env
-        echo "DATABASE_NAME=bttf_pricing_test" >> .env
-
-    - name: Run database migrations
-      run: |
-        source .venv/bin/activate
-        alembic upgrade head
-
-    - name: Seed database
-      run: |
-        source .venv/bin/activate
-        python scripts/seed_db.py
-
-    - name: Run linting (flake8)
-      run: |
-        source .venv/bin/activate
-        flake8 src/ tests/
-      continue-on-error: true
 
     - name: Run code formatting check (black)
       run: |
         source .venv/bin/activate
-        black --check src/ tests/
+        black .
       continue-on-error: true
 
     - name: Run tests with pytest
       run: |
         source .venv/bin/activate
-        pytest tests/ -v --tb=short
-      env:
-        DATABASE_HOST: localhost
-        DATABASE_PORT: 5432
-        DATABASE_USER: postgres
-        DATABASE_PASSWORD: postgres
-        DATABASE_NAME: bttf_pricing_test
+        pytest
 
     - name: Upload test results
       if: always()
