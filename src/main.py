@@ -1,4 +1,8 @@
 from fastapi import FastAPI
+from src.core.logging_config import setup_logging
+
+# Initialize logging
+setup_logging()
 
 from src.api.endpoints import router as pricing_router
 
