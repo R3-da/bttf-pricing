@@ -18,7 +18,7 @@ DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DATAB
 
 engine = create_async_engine(
     DATABASE_URL,
-    echo=True, # Set to False in production
+    echo=False, # Set to False in production
 )
 
 async_session_factory = async_sessionmaker(
