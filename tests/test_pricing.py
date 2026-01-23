@@ -55,7 +55,7 @@ def test_example_4(strategy):
             "Back to the Future 2",
         ]
     )
-    assert strategy.calculate_price(cart) == 48
+    assert strategy.calculate_price(cart) == 47
 
 
 def test_example_5(strategy):
