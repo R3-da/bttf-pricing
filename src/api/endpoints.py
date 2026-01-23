@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 class PriceResponse(BaseModel):
     price: float
+    breakdown: dict | None = None
 
 
 @router.post("/price", response_model=PriceResponse)
@@ -34,10 +35,12 @@ async def calculate_price(
             f"Calculating price for {len(lines)} items: {', '.join(lines[:3])}{'...' if len(lines) > 3 else ''}"
         )
 
-        price = await service.calculate_price(cart_content, session)
+        price, breakdown = await service.calculate_price_with_breakdown(
+            cart_content, session
+        )
 
         logger.info(f"Price calculated successfully: {price}")
-        return PriceResponse(price=price)
+        return PriceResponse(price=price, breakdown=breakdown)
     except MissingMoviesError as e:
         logger.warning(f"Price calculation failed: Missing movies {e.missing_movies}")
         raise HTTPException(
