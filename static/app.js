@@ -3,12 +3,12 @@ const calculateBtn = document.getElementById('calculate-btn');
 const resultContainer = document.getElementById('result-container');
 const priceDisplay = document.getElementById('price-display');
 
-// Fill placeholder content when Tab is pressed on empty textarea
+// Fill with movie names when Tab is pressed on empty textarea
 cartInput.addEventListener('keydown', (e) => {
     if (e.key === 'Tab' && !cartInput.value.trim()) {
         e.preventDefault();
-        // Use placeholder directly - browser already decoded &#10; entities
-        cartInput.value = cartInput.placeholder;
+        const movieNames = "Back to the Future 1\nBack to the Future 2\nBack to the Future 3\nLa chèvre";
+        cartInput.value = movieNames;
         console.log('Filled with:', cartInput.value);
     }
 }, true);
