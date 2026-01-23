@@ -60,3 +60,16 @@ async def test_calculate_price_multiple_missing_movies(client):
             "missing_movies": ["Unknown Movie 1", "Unknown Movie 2"]
         }
     }
+
+@pytest.mark.asyncio
+async def test_calculate_price_api_case_insensitive(client):
+    cart_content = "BACK TO THE FUTURE 1\nback to the future 2\nBaCk To ThE FuTuRe 3"
+    response = await client.post(
+        "/api/v1/price",
+        content=cart_content,
+        headers={"Content-Type": "text/plain"}
+    )
+    print(f"DEBUG TEST: Status: {response.status_code}")
+    print(f"DEBUG TEST: Response: {response.text}")
+    assert response.status_code == 200
+    assert response.json() == {"price": 36.0}
