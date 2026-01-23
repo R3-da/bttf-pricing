@@ -26,3 +26,12 @@ repos:
           'flake8-pydantic',
           'flake8-pytest-style',
         ]
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest -v -s --color=yes
+        language: system
+        pass_filenames: false
+        always_run: true

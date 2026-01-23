@@ -3,23 +3,30 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlmodel import SQLModel
 from typing import AsyncGenerator
-from datetime import date
 
 from src.main import app
 from src.core.database import get_session
 from src.domain.sql_models import Series, Movie
+from datetime import date
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
-engine = create_async_engine(TEST_DATABASE_URL, echo=False)
-TestingSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
+
+@pytest_asyncio.fixture(scope="session")
+async def async_engine():
+    engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+    try:
+        yield engine
+    finally:
+        await engine.dispose()
 
 
 @pytest_asyncio.fixture(scope="function")
-async def session() -> AsyncGenerator[AsyncSession, None]:
-    async with engine.begin() as conn:
+async def session(async_engine) -> AsyncGenerator[AsyncSession, None]:
+    async with async_engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
 
+    TestingSessionLocal = async_sessionmaker(async_engine, expire_on_commit=False)
     async with TestingSessionLocal() as session:
         # Seed test data
         bttf_series = Series(title="Back to the Future")
@@ -64,7 +71,7 @@ async def session() -> AsyncGenerator[AsyncSession, None]:
 
         yield session
 
-    async with engine.begin() as conn:
+    async with async_engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.drop_all)
 
 

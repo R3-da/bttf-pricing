@@ -65,6 +65,7 @@ Thumbs.db
 
 # Environment variables / secrets
 .env
+.env.prod
 
 # Logs
 *.log
