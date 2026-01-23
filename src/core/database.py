@@ -12,12 +12,20 @@ logger = logging.getLogger(__name__)
 # Load environment variables from .env file
 load_dotenv()
 
+
 # Database configuration from environment variables
-POSTGRES_USER = os.getenv("POSTGRES_USER")
-POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-POSTGRES_DB = os.getenv("POSTGRES_DB")
-DATABASE_HOST = os.getenv("DATABASE_HOST")
-DATABASE_PORT = os.getenv("DATABASE_PORT", "5434")
+# Helper function to handle empty strings
+def get_env_or_default(key: str, default: str = None) -> str:
+    """Get environment variable, treating empty strings as None."""
+    value = os.getenv(key, default)
+    return value if value else default
+
+
+POSTGRES_USER = get_env_or_default("POSTGRES_USER")
+POSTGRES_PASSWORD = get_env_or_default("POSTGRES_PASSWORD")
+POSTGRES_DB = get_env_or_default("POSTGRES_DB")
+DATABASE_HOST = get_env_or_default("DATABASE_HOST")
+DATABASE_PORT = get_env_or_default("DATABASE_PORT", "5432")
 DB_ECHO = os.getenv("DB_ECHO", "False").lower() == "true"
 
 # Check for missing environment variables
