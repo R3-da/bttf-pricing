@@ -61,16 +61,14 @@ docker-compose -f docker-compose.dev.yml up --build
 **Install dependencies:**
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
-pre-commit install
+pip install poetry
+poetry install
 ```
 
 **Start the app server:**
 
 ```bash
-uvicorn src.main:app --reload
+poetry run uvicorn src.main:app --reload
 ```
 
 **Stop the environment:**
@@ -101,18 +99,16 @@ docker-compose -f docker-compose.staging.yml down
 
 ### Running Tests
 
-Tests are executed automatically before commits via pre-commit hooks, but you can run them manually:
+Run tests using:
 
 ```bash
-pytest
+poetry run pytest
 ```
 
 Run tests with verbose output:
 ```bash
-pytest -v -s
+poetry run pytest -v -s
 ```
-
-Tests are part of the pre-commit workflow to ensure code quality before committing changes.
 
 ### Code Formatting & Linting
 
@@ -129,16 +125,28 @@ When you commit, the hooks automatically:
 2. Format code with Black
 3. Check code quality with Flake8
 
+To activate this behaviour run:
+
+```bash
+poetry run pre-commit install
+```
+
+Remove it using:
+
+```bash
+poetry run pre-commit uninstall
+```
+
 ### Manual Code Quality Checks
 
 Format code with Black:
 ```bash
-black .
+poetry run black .
 ```
 
 Check code with Flake8:
 ```bash
-flake8 .
+poetry run flake8 .
 ```
 
 ## Project Structure
