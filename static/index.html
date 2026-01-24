@@ -16,10 +16,39 @@
 
         <div class="input-group">
             <label for="cart-content">Enter your cart items (one per line):</label>
-            <textarea id="cart-content" placeholder="Back to the Future 1&#10;Back to the Future 2&#10;La chèvre"></textarea>
+            <textarea id="cart-content" placeholder="Back to the Future 1&#10;Back to the Future 2&#10;Back to the Future 3&#10;La chèvre&#10;&#10;Press [⇥ Tab] to auto-fill"></textarea>
         </div>
 
         <button id="calculate-btn">Calculate Price</button>
+
+        <div id="breakdown-container" class="breakdown-container" style="display: none;">
+            <button id="breakdown-toggle" class="breakdown-toggle">&nbsp;&nbsp;&nbsp;&nbsp;Show Calculation Breakdown</button>
+            <div id="breakdown-content" class="breakdown-content" style="display: none;">
+                <div id="breakdown-items" class="breakdown-items"></div>
+                <div class="breakdown-summary">
+                    <div class="summary-row">
+                        <span>Back to the Future Subtotal:</span>
+                        <span id="bttf-subtotal">€0.00</span>
+                    </div>
+                    <div class="summary-row" id="discount-row" style="display: none;">
+                        <span>Discount (<span id="discount-percent">0</span>%):</span>
+                        <span id="discount-amount">-€0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Back to the Future Total:</span>
+                        <span id="bttf-total">€0.00</span>
+                    </div>
+                    <div class="summary-row" id="other-row" style="display: none;">
+                        <span>Other Movies Total:</span>
+                        <span id="other-total">€0.00</span>
+                    </div>
+                    <div class="summary-row final">
+                        <span>Total:</span>
+                        <span id="summary-total">€0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div id="result-container" class="result">
             <div id="price-display">0.00</div>

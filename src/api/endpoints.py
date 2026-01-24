@@ -1,6 +1,7 @@
 import logging
 from fastapi import APIRouter, Body, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import SQLAlchemyError, OperationalError, InterfaceError, DBAPIError
 from pydantic import BaseModel
 from src.core.services import PricingService, MissingMoviesError
 from src.core.database import get_session
@@ -12,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 class PriceResponse(BaseModel):
     price: float
+    breakdown: dict | None = None
 
 
 @router.post("/price", response_model=PriceResponse)
@@ -34,10 +36,12 @@ async def calculate_price(
             f"Calculating price for {len(lines)} items: {', '.join(lines[:3])}{'...' if len(lines) > 3 else ''}"
         )
 
-        price = await service.calculate_price(cart_content, session)
+        price, breakdown = await service.calculate_price_with_breakdown(
+            cart_content, session
+        )
 
         logger.info(f"Price calculated successfully: {price}")
-        return PriceResponse(price=price)
+        return PriceResponse(price=price, breakdown=breakdown)
     except MissingMoviesError as e:
         logger.warning(f"Price calculation failed: Missing movies {e.missing_movies}")
         raise HTTPException(
@@ -47,8 +51,23 @@ async def calculate_price(
                 "missing_movies": e.missing_movies,
             },
         )
+    except (InterfaceError, OperationalError, DBAPIError, SQLAlchemyError) as e:
+        logger.error(f"Database connection error: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=503,
+            detail="Database is currently unavailable. Please try again later.",
+        )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except OSError as e:
+        logger.error(f"Database connection error: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=503,
+            detail="Database is currently unavailable. Please try again later.",
+        )
     except Exception as e:
         logger.error(f"Unexpected error calculating price: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred. Please try again later.",
+        )

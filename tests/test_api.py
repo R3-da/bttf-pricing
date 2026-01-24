@@ -15,7 +15,9 @@ async def test_calculate_price_api(client):
         "/api/v1/price", content=cart_content, headers={"Content-Type": "text/plain"}
     )
     assert response.status_code == 200
-    assert response.json() == {"price": 36.0}
+    data = response.json()
+    assert data["price"] == 36.0
+    assert "breakdown" in data
 
 
 @pytest.mark.asyncio
@@ -24,7 +26,9 @@ async def test_calculate_price_api_empty(client):
         "/api/v1/price", content="", headers={"Content-Type": "text/plain"}
     )
     assert response.status_code == 200
-    assert response.json() == {"price": 0.0}
+    data = response.json()
+    assert data["price"] == 0.0
+    assert "breakdown" in data
 
 
 @pytest.mark.asyncio
@@ -68,4 +72,6 @@ async def test_calculate_price_api_case_insensitive(client):
     print(f"DEBUG TEST: Status: {response.status_code}")
     print(f"DEBUG TEST: Response: {response.text}")
     assert response.status_code == 200
-    assert response.json() == {"price": 36.0}
+    data = response.json()
+    assert data["price"] == 36.0
+    assert "breakdown" in data
