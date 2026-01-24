@@ -42,7 +42,9 @@ The application follows Clean Architecture principles with:
 1. Clone the repository.
 
 ```bash
+git clone https://github.com/R3-da/bttf-pricing.git
 cd bttf-pricing
+cp .env.example .env
 ```
 
 The project supports two different Docker Compose configurations for flexibility in development and deployment:
