@@ -21,12 +21,17 @@ jobs:
           name: coverage-report
           path: .
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@ffc3010
+      - uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
         with:
-          organization: ${{ secrets.SONAR_ORG_KEY }}
-          projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
           projectBaseDir: .
-          extra_args: "-Dsonar.python.version=3.10"
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORG_KEY }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.python.version=3.10
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.sources=src/
+            -Dsonar.tests=tests/
+            -Dsonar.test.exclusions=tests/**
+            -Dsonar.verbose=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
