@@ -11,9 +11,68 @@ service = PricingService()
 logger = logging.getLogger(__name__)
 
 
+class MovieItem(BaseModel):
+    title: str
+    series: str | None
+    price: float
+    is_bttf: bool
+    count: int
+
+
+class PricingBreakdown(BaseModel):
+    items: list[MovieItem]
+    bttf_subtotal: float
+    bttf_count: int
+    discount_percentage: float
+    bttf_discount: float
+    bttf_total: float
+    other_total: float
+    total: float
+
+
 class PriceResponse(BaseModel):
     price: float
-    breakdown: dict | None = None
+    breakdown: PricingBreakdown | None = None
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "price": 47,
+                "breakdown": {
+                    "items": [
+                        {
+                            "title": "Back to the Future 1",
+                            "series": "Back to the Future",
+                            "price": 15,
+                            "is_bttf": True,
+                            "count": 1,
+                        },
+                        {
+                            "title": "Back to the Future 2",
+                            "series": "Back to the Future",
+                            "price": 15,
+                            "is_bttf": True,
+                            "count": 1,
+                        },
+                        {
+                            "title": "La chèvre",
+                            "series": None,
+                            "price": 20,
+                            "is_bttf": False,
+                            "count": 1,
+                        },
+                    ],
+                    "bttf_subtotal": 30,
+                    "bttf_count": 2,
+                    "discount_percentage": 10,
+                    "bttf_discount": 3,
+                    "bttf_total": 27,
+                    "other_total": 20,
+                    "total": 47,
+                },
+            }
+        }
+    }
 
 
 @router.post("/price", response_model=PriceResponse)
