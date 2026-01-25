@@ -79,6 +79,8 @@ class PricingService:
             return 0.0, {
                 "items": [],
                 "bttf_subtotal": 0.0,
+                "bttf_count": 0,
+                "discount_percentage": 0.0,
                 "bttf_discount": 0.0,
                 "bttf_total": 0.0,
                 "other_total": 0.0,

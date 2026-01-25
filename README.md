@@ -58,11 +58,6 @@ The project supports two different Docker Compose configurations for flexibility
 docker-compose -f docker-compose.staging.yml up --build
 ```
 
-**Stop the environment:**
-```bash
-docker-compose -f docker-compose.staging.yml down
-```
-
 ### Option 2: Local Development (docker-compose.dev.yml)
 
 **Best for**: Interactive development with hot reloads
@@ -83,11 +78,6 @@ poetry install
 
 ```bash
 poetry run uvicorn src.main:app --reload
-```
-
-**Stop the environment:**
-```bash
-docker-compose -f docker-compose.dev.yml down
 ```
 
 ## Access the application:
