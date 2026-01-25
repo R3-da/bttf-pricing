@@ -82,8 +82,6 @@ async def seed_data():
         except Exception as e:
             print(f"Error seeding data: {e}")
             await session.rollback()
-        finally:
-            break  # Exit generator
 
 
 if __name__ == "__main__":
