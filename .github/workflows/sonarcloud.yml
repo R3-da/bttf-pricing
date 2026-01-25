@@ -22,7 +22,7 @@ jobs:
           path: .
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
+        uses: SonarSource/sonarcloud-github-action@ffc3010
         with:
           organization: ${{ secrets.SONAR_ORG_KEY }}
           projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
