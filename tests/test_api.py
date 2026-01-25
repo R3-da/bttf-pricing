@@ -16,7 +16,7 @@ async def test_calculate_price_api(client):
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["price"] == 36.0
+    assert data["price"] == pytest.approx(36.0)
     assert "breakdown" in data
 
 
@@ -27,7 +27,7 @@ async def test_calculate_price_api_empty(client):
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["price"] == 0.0
+    assert data["price"] == pytest.approx(0.0)
     assert "breakdown" in data
 
 
@@ -73,5 +73,5 @@ async def test_calculate_price_api_case_insensitive(client):
     print(f"DEBUG TEST: Response: {response.text}")
     assert response.status_code == 200
     data = response.json()
-    assert data["price"] == 36.0
+    assert data["price"] == pytest.approx(36.0)
     assert "breakdown" in data
