@@ -49,7 +49,21 @@ cp .env.example .env
 
 The project supports two different Docker Compose configurations for flexibility in development and deployment:
 
-### Option 1: Local Development (docker-compose.dev.yml)
+### Option 1: Staging/Production Simulation (docker-compose.staging.yml)
+
+**Best for**: Testing production-like environment
+
+**Start the staging environment:**
+```bash
+docker-compose -f docker-compose.staging.yml up --build
+```
+
+**Stop the environment:**
+```bash
+docker-compose -f docker-compose.staging.yml down
+```
+
+### Option 2: Local Development (docker-compose.dev.yml)
 
 **Best for**: Interactive development with hot reloads
 
@@ -74,20 +88,6 @@ poetry run uvicorn src.main:app --reload
 **Stop the environment:**
 ```bash
 docker-compose -f docker-compose.dev.yml down
-```
-
-### Option 2: Staging/Production Simulation (docker-compose.staging.yml)
-
-**Best for**: Testing production-like environment
-
-**Start the staging environment:**
-```bash
-docker-compose -f docker-compose.staging.yml up --build
-```
-
-**Stop the environment:**
-```bash
-docker-compose -f docker-compose.staging.yml down
 ```
 
 ## Access the application:
