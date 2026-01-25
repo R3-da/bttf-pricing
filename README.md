@@ -105,10 +105,12 @@ Run tests using:
 poetry run pytest
 ```
 
-Run tests with verbose output:
+Run tests and generate code coverage:
 ```bash
-poetry run pytest -v -s
+poetry run pytest --cov=src --cov-report=term-missing --cov-report=xml --cov-report=html
 ```
+
+Open htmlcov/index.html to see coverage report. (latest measured coverage: ~60%)
 
 ### Code Formatting & Linting
 
