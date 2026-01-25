@@ -1,0 +1,13 @@
+[run]
+branch = True
+source = src  # adjust to your source code folder
+
+[report]
+show_missing = True
+skip_covered = True
+
+[xml]
+output = coverage.xml
+
+[html]
+directory = htmlcov

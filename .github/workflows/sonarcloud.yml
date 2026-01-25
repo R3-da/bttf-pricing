@@ -1,0 +1,31 @@
+name: SonarCloud Scan
+
+on:
+  workflow_run:
+    workflows: ["Test Suite"]
+    types:
+      - completed
+
+jobs:
+  sonar:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: .
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          organization: ${{ secrets.SONAR_ORG_KEY }}
+          projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
