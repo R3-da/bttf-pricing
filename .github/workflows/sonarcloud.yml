@@ -27,5 +27,6 @@ jobs:
           organization: ${{ secrets.SONAR_ORG_KEY }}
           projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
           projectBaseDir: .
+          extra_args: "-Dsonar.python.version=3.10"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
