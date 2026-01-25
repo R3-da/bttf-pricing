@@ -1,5 +1,6 @@
 [run]
 branch = True
+relative_paths = False
 source = src  # adjust to your source code folder
 
 [report]
