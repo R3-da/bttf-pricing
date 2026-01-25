@@ -7,9 +7,12 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && apt-get install -y build-essential python3-dev && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip
-COPY pyproject.toml .
-RUN pip install .
+RUN pip install --upgrade pip poetry==2.3.1 poetry-plugin-export
+COPY pyproject.toml poetry.lock ./
+
+RUN poetry export -f requirements.txt --without-hashes -o requirements.txt
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 FROM python:3.10-slim
 
@@ -25,7 +28,6 @@ COPY static ./static
 COPY scripts ./scripts
 COPY migrations ./migrations
 COPY alembic.ini .
-COPY pyproject.toml .
 
 # Expose port
 EXPOSE 8000
