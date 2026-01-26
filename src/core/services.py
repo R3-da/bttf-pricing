@@ -64,12 +64,16 @@ class PricingService:
             series_title = (
                 sql_movie.series.title if sql_movie and sql_movie.series else None
             )
+            series_id = sql_movie.series_id if sql_movie else None
             price = sql_movie.price
-            domain_movies.append(
-                DomainMovie(
-                    title=sql_movie.title, series_title=series_title, price=price
-                )
+            domain_movie = DomainMovie(
+                title=sql_movie.title,
+                series_id=series_id,
+                price=price,
             )
+            # Set series_title after initialization
+            domain_movie.series_title = series_title
+            domain_movies.append(domain_movie)
 
         if missing_movies:
             # Join unique missing items to avoid spamming same title

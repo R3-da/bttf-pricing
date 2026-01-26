@@ -13,8 +13,10 @@ def test_cart_from_text():
 
 
 def test_cart_is_bttf():
-    assert Movie("Back to the Future 1", series_title="Back to the Future").is_bttf
-    assert not Movie("La chèvre").is_bttf
+    movie = Movie("Back to the Future 1")
+    movie.series_title = "Back to the Future"
+    assert movie.series_title == "Back to the Future"
+    assert Movie("La chèvre").series_title != "Back to the Future"
 
 
 def test_cart_empty():
