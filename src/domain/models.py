@@ -1,16 +1,14 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
+from uuid import UUID
 
 
-@dataclass(frozen=True)
+@dataclass
 class Movie:
     title: str
-    series_title: str | None = None
+    series_id: Optional[UUID] = None
+    series_title: Optional[str] = None
     price: float = 0.0
-
-    @property
-    def is_bttf(self) -> bool:
-        return self.series_title == "Back to the Future"
 
 
 @dataclass

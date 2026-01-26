@@ -17,7 +17,9 @@ def create_cart_with_series(titles):
         else:
             series_title = None
             price = 20.0
-        movies.append(Movie(title=title, series_title=series_title, price=price))
+        movie = Movie(title=title, price=price)
+        movie.series_title = series_title
+        movies.append(movie)
     return Cart(items=movies)
 
 
