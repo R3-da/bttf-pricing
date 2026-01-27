@@ -100,7 +100,7 @@ Run tests and generate code coverage:
 poetry run pytest --cov=src --cov-report=term-missing --cov-report=xml --cov-report=html
 ```
 
-Open htmlcov/index.html to see coverage report. (latest measured coverage: ~60%)
+Open htmlcov/index.html to see coverage report. (latest measured coverage: ~75%)
 
 Check code quality and coverage on SonarCloud: [🔗 https://sonarcloud.io/summary/overall?id=R3-da_bttf-pricing&branch=main](https://sonarcloud.io/summary/overall?id=R3-da_bttf-pricing&branch=main)
 
