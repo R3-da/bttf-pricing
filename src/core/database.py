@@ -42,7 +42,8 @@ missing_vars = [
 
 if missing_vars:
     logger.error(
-        f"Missing environment variables: {', '.join(missing_vars)}. DB connection might fail."
+        "Missing environment variables: %s. DB connection might fail.",
+        ', '.join(missing_vars)
     )
 
 # Fallback values for URL construction if missing
@@ -59,7 +60,7 @@ try:
         echo=DB_ECHO,  # Configured via environment variable
     )
 except Exception as e:
-    logger.error(f"Failed to create database engine: {e}")
+    logger.error("Failed to create database engine: %s", e)
     # Create a dummy engine or handle it gracefully
     engine = None
 
@@ -80,7 +81,7 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
         async with async_session_factory() as session:
             yield session
     except SQLAlchemyError as e:
-        logger.error(f"Database session error: {e}")
+        logger.error("Database session error: %s", e)
         raise
 
 
@@ -93,4 +94,4 @@ async def init_db():
             # await conn.run_sync(SQLModel.metadata.drop_all)
             await conn.run_sync(SQLModel.metadata.create_all)
     except Exception as e:
-        logger.error(f"Failed to initialize database: {e}")
+        logger.error("Failed to initialize database: %s", e)
